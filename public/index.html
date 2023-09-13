@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Meet</title>
+
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <div class="main_container">
+      <div class="dashboard_container">
+        <div class="logo_container">
+          <img src="./utils/images/logo.png" alt="logo" />
+        </div>
+
+        <div class="description_container">
+          <p class="description_container_paragraph">
+            Chat with the Strangers or your team by passing the meeting code!
+          </p>
+        </div>
+        <div class="personal_code_container">
+          <div class="personal_code_title_container">
+            <p class="personal_code_title_paragraph">Your personal code</p>
+          </div>
+          <div class="personal_code_value_container">
+            <p class="personal_code_value_paragraph" id="personal_code_paragraph">adfddsfd874874</p>
+            <button class="personal_code_copy_button" id="personal_code_copy_button">
+              <img src="./utils//images//copyButton.png" alt="copy" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="call_container"></div>
+      <div class="messenger_container"></div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./js/main.js" type="module"></script>
+  </body>
+</html>
