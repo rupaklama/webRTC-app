@@ -379,6 +379,13 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.call_button_small,
+.call_button_large {
+  cursor: pointer;
 }
 
 .finish_chat_button_container {

@@ -21,6 +21,17 @@ app.get("/hello", (req, res) => {
   res.status(200).send("Hello world!");
 });
 
+// note: Emit ONLY to the PARTICULAR CONNECTION
+// socket.emit("message", message);
+
+// note: Emit to EVERYONE but not to the current particular connection
+// socket.broadcast.emit("message", "A new user has joined!");
+
+// note: on callback arg, server has access to data sent by client
+// socket.on("clientMessage", msg => {
+//  NOTE: io.emit to send/emit to EVERYONE
+//  io.emit("message", msg);
+
 // Connected users
 let connectedPeers = [];
 
@@ -28,9 +39,25 @@ let connectedPeers = [];
 io.on("connection", socket => {
   console.log("Socket.io server connection created in the Server!");
   connectedPeers.push(socket.id);
-  // console.log(connectedPeers);
+  console.log("connected users", connectedPeers);
 
-  // create/listen events
+  // note: listening an events in the client
+  socket.on("pre-offer", data => {
+    const { callType, calleePersonalCode } = data;
+
+    const connectedPeer = connectedPeers.find(peerSockedId => peerSockedId === calleePersonalCode);
+
+    if (connectedPeer) {
+      const data = {
+        callerSockedId: socket.id,
+        callType,
+      };
+
+      // to() - whom to emit event to
+      io.to(calleePersonalCode).emit("pre-offer", data);
+    }
+  });
+
   socket.on("disconnect", () => {
     console.log(`${socket.id} user is disconnected`);
 
@@ -38,23 +65,6 @@ io.on("connection", socket => {
 
     connectedPeers = newConnectedPeers;
   });
-
-  // let count = 0;
-  // socket.emit() is to send Event from our server with some data to the Client
-  // note: need to setup our own 'custom' events to feed the need of our application
-  // socket.emit("countUpdated", count);
-  // note: the second arg value in the event above is accessible in the client on the callback function
-
-  // note: listening an event in the client
-  // socket.on("increment", () => {
-  //   count++;
-
-  // notify only particular connection in the client with updated data
-  // socket.emit("countUpdated", count);
-
-  // note: notify many connected connections at once
-  //   io.emit("countUpdated", count);
-  // });
 });
 
 const port = process.env.port || 2000;

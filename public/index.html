@@ -89,7 +89,7 @@
             <video class="local_video" id="local_video" autoplay muted></video>
           </div>
 
-          <div class="call_buttons_container display_none" id="call_buttons">
+          <div class="call_buttons_container" id="call_buttons">
             <button class="call_button_small" id="mic_button">
               <img src="./utils/images/mic.png" alt="mic button" id="mic_button_image" />
             </button>
@@ -113,11 +113,11 @@
             </button>
           </div>
 
-          <div class="video_recording_buttons_container display_none" id="video_recording_buttons">
-            <button id="pause_recoding_button">
+          <div class="video_recording_buttons_container" id="video_recording_buttons">
+            <button id="pause_recording_button">
               <img src="./utils/images/pause.png" alt="pause button" />
             </button>
-            <button id="resume_recoding_button" class="display_none">
+            <button id="resume_recording_button">
               <img src="./utils/images/resume.png" alt="resume button" />
             </button>
             <button id="stop_recording_button">Stop recording</button>
@@ -127,7 +127,7 @@
 
       <div class="messenger_container">
         <div class="messages_container" id="messages-container"></div>
-        <div class="new_message_container display_none" id="new_message">
+        <div class="new_message_container" id="new_message">
           <input type="text" class="new_message_input" id="new_message_input" placeholder="Type your message..." />
           <button class="send_message_button" id="send_message_button">
             <img src="./utils//images/sendMessageButton.png" alt="send message" class="send_message_button_image" />
@@ -143,6 +143,7 @@
     <script src="./js/wss.js" type="module"></script>
     <script src="./js/store.js" type="module"></script>
     <script src="./js/webRTC.js" type="module"></script>
+    <script src="./js/recordingUtils.js" type="module"></script>
     <script src="./js/main.js" type="module"></script>
   </body>
 </html>
