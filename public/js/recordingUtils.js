@@ -2,6 +2,7 @@
 
 import * as store from "./store.js";
 
+// video/audio data
 let mediaStream = null;
 
 // Getting an access to camera and microphone and showing that in local preview
@@ -19,6 +20,7 @@ const getAudioVideoAccess = () => {
     // A Promise whose fulfillment handler receives a MediaStream object
     // when the requested media has successfully been obtained
     .then(stream => {
+      // stream & auto play the video
       const localVideo = document.getElementById("local_video");
       localVideo.srcObject = stream;
 
@@ -46,11 +48,13 @@ let mediaRecorder;
 // video data
 let recordedVideoChunks = [];
 
-async function captureScreen(
+// options for media
+async function captureScreenShare(
   mediaConstraints = {
     video: true,
   }
 ) {
+  // getDisplayMedia to get access for screen share stream
   const screenStream = await navigator.mediaDevices.getDisplayMedia(mediaConstraints);
   return screenStream;
 }
@@ -61,14 +65,18 @@ async function captureAudio(
     audio: true,
   }
 ) {
-  const audioStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
-  return audioStream;
+  const audioVideoStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
+  return audioVideoStream;
 }
 
 const startRecording = async () => {
-  const screenStream = await captureScreen();
+  const screenStream = await captureScreenShare();
   const audioStream = await captureAudio();
+
+  // note: Screen share options
   // const stream = new MediaStream([...screenStream.getTracks(), ...audioStream.getTracks()]);
+
+  // stream: MediaStream video/audio data
   const stream = new MediaStream([...mediaStream.getTracks()]);
 
   // MediaRecorder.isTypeSupported() static method returns a Boolean which is true if the
@@ -178,4 +186,52 @@ resumeRecordingButton.addEventListener("click", () => {
   mediaRecorder.resume();
 
   switchPauseResumeButtons();
+});
+
+// mute unmute audio
+const micOnImgSrc = "../utils/images/mic.png";
+const micOffImgSrc = "../utils/images/micOff.png";
+
+const updateMicButton = micActive => {
+  const micButtonImage = document.getElementById("mic_button_image");
+  micButtonImage.src = micActive ? micOffImgSrc : micOnImgSrc;
+};
+
+const micButton = document.getElementById("mic_button");
+micButton.addEventListener("click", () => {
+  // check if microphone is enabled
+  const micEnabled = mediaStream.getAudioTracks()[0].enabled;
+  // toggle microphone
+  mediaStream.getAudioTracks()[0].enabled = !micEnabled;
+
+  updateMicButton(micEnabled);
+});
+
+// turn on/off camera
+const cameraOnImgSrc = "../utils/images/camera.png";
+const cameraOffImgSrc = "../utils/images/cameraOff.png";
+
+const updateCameraButton = cameraActive => {
+  const cameraButtonImage = document.getElementById("camera_button_image");
+  cameraButtonImage.src = cameraActive ? cameraOffImgSrc : cameraOnImgSrc;
+};
+
+const cameraButton = document.getElementById("camera_button");
+cameraButton.addEventListener("click", () => {
+  // check if camera is enabled
+  const cameraEnabled = mediaStream.getVideoTracks()[0].enabled;
+  // toggle camera
+  mediaStream.getVideoTracks()[0].enabled = !cameraEnabled;
+
+  updateCameraButton(cameraEnabled);
+});
+
+// screen share
+let screenSharingActive = false;
+
+const switchScreenShareButton = document.getElementById("screen_share_button");
+switchScreenShareButton.addEventListener("click", async () => {
+  if (screenSharingActive) {
+  } else {
+  }
 });
